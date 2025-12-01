@@ -35,13 +35,15 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ onBack }) => {
     };
 
     useEffect(() => {
-        let interval: ReturnType<typeof setInterval>;
+        let interval: ReturnType<typeof setInterval> | undefined;
         if (timerActive && timerCount > 0) {
             interval = setInterval(() => setTimerCount(c => c - 1), 1000);
         } else if (timerCount === 0) {
             setTimerActive(false);
         }
-        return () => clearInterval(interval);
+        return () => {
+            if (interval) clearInterval(interval);
+        };
     }, [timerActive, timerCount]);
 
     return (
